@@ -92,14 +92,6 @@ public class DbService : IDbService
             await command.ExecuteNonQueryAsync();
             command.Parameters.Clear();
             
-            //
-            // command.CommandText = "SELECT Product_Warehouse.IdOrder FROM Product_Warehouse JOIN [Order] ON Product_Warehouse.IdOrder = [Order].IdOrder JOIN Product ON Product.IdProduct = [Order].IdProduct WHERE Product.IdProduct = @IdProduct AND Product_Warehouse.Amount = @Amount";
-            // command.Parameters.AddWithValue("@IdProduct", warehouse.IdProduct);
-            // command.Parameters.AddWithValue("@Amount", warehouse.Amount);
-            //
-            // //var idOrder = await command.ExecuteScalarAsync();
-            // command.Parameters.Clear();
-            
             //cena
             command.CommandText = "SELECT Product.Price * Amount FROM Product join [Order] on Product.IdProduct = [Order].IdProduct WHERE Product.IdProduct = @IdProduct and [Order].Amount = @Amount";
             command.Parameters.AddWithValue("@IdProduct", warehouse.IdProduct);
@@ -129,22 +121,5 @@ public class DbService : IDbService
             throw;
         }
         // END TRANSACTION
-    }
-
-    public async Task ProcedureAsync()
-    {
-        await using SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("Default"));
-        await using SqlCommand command = new SqlCommand();
-        
-        command.Connection = connection;
-        await connection.OpenAsync();
-        
-        command.CommandText = "NazwaProcedury";
-        command.CommandType = CommandType.StoredProcedure;
-        
-        command.Parameters.AddWithValue("@Id", 2);
-        
-        await command.ExecuteNonQueryAsync();
-        
     }
 }
